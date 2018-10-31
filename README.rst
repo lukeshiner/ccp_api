@@ -12,8 +12,8 @@
    :target: https://github.com/ambv/black
 
 
-#########################################
+#######################################################
 ccp_api - Cloud Commerce Pro API integration for Python
-#########################################
+#######################################################
 
 Note: This project in the planning stages and is not ready for use.
