@@ -14,6 +14,7 @@ requests-mock = "*"
 pytest-coverage = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
+coveralls = "*"
 
 [requires]
 python_version = "3.7"
