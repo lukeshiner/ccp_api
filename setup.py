@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 """Setup for pywowcher package."""
 
-import os
+from pathlib import Path
 
 import setuptools
 
 with open("README.rst", "r") as readme:
     long_description = readme.read()
 
-here = os.path.abspath(os.path.dirname(__file__))
+version_file_path = Path(__file__).parent.joinpath("src", "ccp_api", "__version__.py")
 
 about = {}
-with open(os.path.join(here, "src", "ccp_api", "__version__.py"), "r") as f:
+with open(str(version_file_path)) as f:
     exec(f.read(), about)
 
 setuptools.setup(

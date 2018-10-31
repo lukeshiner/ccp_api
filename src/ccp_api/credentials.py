@@ -1,6 +1,6 @@
 """API credentials and setting management."""
 
-import os
+from pathlib import Path
 
 import yaml
 
@@ -13,15 +13,14 @@ class CredentialsFile:
     def find(self, directory=None):
         """Return the path of a Pipfile in parent directories."""
         if directory is None:
-            directory = os.getcwd()
-        if os.path.exists(os.path.join(directory, self.CREDENTIALS_FILE_NAME)):
-            return os.path.join(directory, self.CREDENTIALS_FILE_NAME)
-        elif os.path.dirname(directory) == directory:
+            directory = Path.cwd()
+        filepath = directory.joinpath(self.CREDENTIALS_FILE_NAME)
+        if filepath.exists():
+            return filepath
+        elif directory.match(directory.root):  # Directory is the root directory
             return None
         else:
-            return self.get_wowcher_credentials_file(
-                directory=os.path.dirname(directory)
-            )
+            return self.get_wowcher_credentials_file(directory=directory.parent)
 
     def load(self):
         """Read API credentials from file."""
