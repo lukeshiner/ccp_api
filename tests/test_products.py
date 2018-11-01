@@ -42,6 +42,10 @@ class TestProducts(Base_ccp_api_Test):
         return file_fixture("products", "get_product_images_response.xml")
 
     @pytest.fixture
+    def get_product_images_empty_response(self, file_fixture):
+        return file_fixture("products", "get_product_images_empty_response.xml")
+
+    @pytest.fixture
     def set_external_product_ID_response(self, file_fixture):
         return file_fixture("products", "set_external_product_ID_response.xml")
 
@@ -110,6 +114,13 @@ class Test_get_product_images(TestProducts):
         mock_product_method(text=get_product_images_response)
         response = ccp_api.products.get_product_images("1234864")
         assert response[0].ID == 14601918
+
+    def test_get_product_images_returns_empty_list_when_no_images_exist(
+        self, mock_product_method, get_product_images_empty_response
+    ):
+        mock_product_method(text=get_product_images_empty_response)
+        returned_value = ccp_api.products.get_product_images("1234864")
+        assert returned_value == []
 
 
 class Test_set_external_product_id(TestProducts):
