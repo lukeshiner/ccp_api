@@ -20,7 +20,7 @@ class CredentialsFile:
         elif directory.match(directory.root):  # Directory is the root directory
             return None
         else:
-            return self.get_wowcher_credentials_file(directory=directory.parent)
+            return self.find(directory=directory.parent)
 
     def load(self):
         """Read API credentials from file."""
