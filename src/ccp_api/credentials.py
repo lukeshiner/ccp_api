@@ -25,7 +25,7 @@ class CredentialsFile:
     def load(self):
         """Read API credentials from file."""
         file_path = self.find()
-        with open(file_path, "r") as f:
+        with open(str(file_path), "r") as f:
             config = yaml.load(f.read())
         return config["brand_id"], config["security_hash"]
 
