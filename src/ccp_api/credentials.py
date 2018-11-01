@@ -40,11 +40,11 @@ class Credentials:
     def set(self, brand_id=None, security_hash=None):
         """Set Cloud Commerce Pro API credentials."""
         if brand_id is None and security_hash is None:
-            brand_id, security_hash = self.set_from_file()
+            brand_id, security_hash = self.get_from_file()
         self.brand_id = brand_id
         self.security_hash = security_hash
 
-    def set_from_file(self):
+    def get_from_file(self):
         """Set Cloud Commerce Pro API credentials from a .ccp_credentials.yaml file."""
         self.credentials_file = CredentialsFile()
         return self.credentials_file.load()
