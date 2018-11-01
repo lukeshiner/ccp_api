@@ -1,9 +1,12 @@
 """Base test classes."""
 
+import os
+import tempfile
 from pathlib import Path
 
 import ccp_api
 import pytest
+import yaml
 
 
 class Base_ccp_api_Test:
@@ -20,6 +23,19 @@ class Base_ccp_api_Test:
         "155,97,100,73,228,227,194,75,5,234,10,77,113,154,244,72,102,188,73,181,20,216,"
         "188,219,254,116,86,48,107,247,77,98,51,88,173,129,217,198,75,247"
     )
+
+    @pytest.fixture
+    def tmp_cwd(self):
+        os.chdir(tempfile.mkdtemp())
+
+    @pytest.fixture
+    def config_file(self, tmp_cwd):
+        config = {
+            "brand_id": self.TEST_BRAND_ID,
+            "security_hash": self.TEST_SECURITY_HASH,
+        }
+        with open(ccp_api.credentials.CredentialsFile.CREDENTIALS_FILE_NAME, "w") as f:
+            yaml.dump(config, f, default_flow_style=False)
 
     @pytest.fixture
     def login(self):
