@@ -2,7 +2,7 @@
 
 import zeep
 
-from .credentials import login
+from .credentials import Credentials
 from .exceptions import ResponseError
 
 
@@ -14,7 +14,7 @@ class Endpoint(zeep.client.Client):
 
     def __init__(self):
         """Set up the endpoint."""
-        self.login = login
+        self.login = Credentials()
         super().__init__(wsdl=self.wsdl_url())
 
     def wsdl_url(self):
@@ -23,15 +23,18 @@ class Endpoint(zeep.client.Client):
 
     def credentials(self):
         """Return API credentials formatted for use in requests."""
-        if login.brand_id is None or login.security_hash is None:
+        if self.login.brand_id is None or self.login.security_hash is None:
             raise ValueError("No login credentials set")
-        return {"BrandID": login.brand_id, "SecurityHash": login.security_hash}
+        return {
+            "BrandID": self.login.brand_id,
+            "SecurityHash": self.login.security_hash,
+        }
 
     def call_method(self, method_name, content):
         """Make a request to one of the endpoint's methods."""
         request_content = self.credentials()
         request_content["Content"] = content
-        with self.settings(raw_response=login.raw_response):
+        with self.settings(raw_response=self.login.raw_response):
             response = getattr(self.service, method_name)(request_content)
         return response
 

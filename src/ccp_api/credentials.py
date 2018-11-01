@@ -33,21 +33,33 @@ class CredentialsFile:
 class Credentials:
     """API credentials and settings manager."""
 
-    brand_id = None
-    security_hash = None
-    raw_response = False
+    class __Credentials:
+        def __init__(self):
+            self.reset()
 
-    def set(self, brand_id=None, security_hash=None):
-        """Set Cloud Commerce Pro API credentials."""
-        if brand_id is None and security_hash is None:
-            brand_id, security_hash = self.get_from_file()
-        self.brand_id = brand_id
-        self.security_hash = security_hash
+        def reset(self):
+            self.brand_id = None
+            self.security_hash = None
+            self.raw_response = False
 
-    def get_from_file(self):
-        """Set Cloud Commerce Pro API credentials from a .ccp_credentials.yaml file."""
-        self.credentials_file = CredentialsFile()
-        return self.credentials_file.load()
+        def set(self, brand_id=None, security_hash=None):
+            """Set Cloud Commerce Pro API credentials."""
+            if brand_id is None and security_hash is None:
+                brand_id, security_hash = self.get_from_file()
+            self.brand_id = brand_id
+            self.security_hash = security_hash
 
+        def get_from_file(self):
+            """Set Cloud Commerce Pro API credentials from a .ccp_credentials.yaml file."""
+            self.credentials_file = CredentialsFile()
+            return self.credentials_file.load()
 
-login = Credentials()
+    instance = None
+
+    def __init__(self):
+        """Create a __Credentials instance if one does not exist."""
+        if not Credentials.instance:
+            Credentials.instance = Credentials.__Credentials()
+
+    def __getattr__(self, name):
+        return getattr(self.instance, name)
