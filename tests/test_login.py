@@ -68,3 +68,9 @@ class TestCredentials(Base_ccp_api_Test):
         ccp_api.login.set(brand_id="999", security_hash="5,11")
         assert ccp_api.login.brand_id == temp_brand_id
         assert ccp_api.login.security_hash == temp_security_hash
+
+    def test_exception_is_raised_when_makeing_a_request_with_no_credentials(self):
+        assert ccp_api.login.brand_id is None
+        assert ccp_api.login.security_hash is None
+        with pytest.raises(ValueError):
+            ccp_api.products.get_product_by_ID("1234864")
