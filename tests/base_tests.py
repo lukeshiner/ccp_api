@@ -48,12 +48,6 @@ class Base_ccp_api_Test:
             yaml.dump(config, f, default_flow_style=False)
 
     @pytest.fixture
-    def login(self):
-        ccp_api.login.set(
-            brand_id=self.TEST_BRAND_ID, security_hash=self.TEST_SECURITY_HASH
-        )
-
-    @pytest.fixture
     def mock_product_method(self, requests_mock, products_wsdl):
         def _mock_product_method(**kwargs):
             method_url = (
