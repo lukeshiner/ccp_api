@@ -24,6 +24,16 @@ class Base_ccp_api_Test:
         "188,219,254,116,86,48,107,247,77,98,51,88,173,129,217,198,75,247"
     )
 
+    @classmethod
+    def setup_method(cls):
+        ccp_api.login.set(
+            brand_id=cls.TEST_BRAND_ID, security_hash=cls.TEST_SECURITY_HASH
+        )
+
+    @classmethod
+    def teardown_method(cls):
+        ccp_api.login = ccp_api.credentials.Credentials()
+
     @pytest.fixture
     def tmp_cwd(self):
         os.chdir(tempfile.mkdtemp())
@@ -63,10 +73,3 @@ class Base_ccp_api_Test:
                 return f.read()
 
         return get_file
-
-    @classmethod
-    def setup_class(cls):
-        """Set the API credentials."""
-        ccp_api.login.set(
-            brand_id=cls.TEST_BRAND_ID, security_hash=cls.TEST_SECURITY_HASH
-        )

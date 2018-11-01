@@ -15,7 +15,11 @@ class TestCredentials(Base_ccp_api_Test):
 
     @classmethod
     def setup_method(cls):
-        ccp_api.login = ccp_api.credentials.Credentials()
+        ccp_api.login.reset()
+
+    @classmethod
+    def teardown_method(cls):
+        ccp_api.login.reset()
 
     def test_login(self):
         assert ccp_api.login.brand_id is None
