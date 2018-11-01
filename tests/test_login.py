@@ -35,7 +35,6 @@ class TestCredentials(Base_ccp_api_Test):
             ccp_api.login.set()
 
     def test_loading_credentials_from_file(self, config_file):
-        print(ccp_api.credentials.Credentials.brand_id)
         assert ccp_api.login.brand_id is None
         assert ccp_api.login.security_hash is None
         ccp_api.login.set()
