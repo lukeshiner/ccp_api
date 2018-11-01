@@ -2,6 +2,7 @@
 
 import ccp_api
 import pytest
+import requests
 
 from .base_tests import Base_ccp_api_Test
 
@@ -29,4 +30,18 @@ class TestCCPAPI(Base_ccp_api_Test):
             text=error_response,
         )
         with pytest.raises(ccp_api.exceptions.ResponseError):
-            ccp_api.products.get_product_by_ID("1234864")
+            ccp_api.products.get_product_images("1234864")
+
+    def test_raw_response(self, requests_mock, file_fixture):
+        ccp_api.login.raw_response = True
+        response_text = file_fixture("products", "get_product_images_response.xml")
+        requests_mock.post(
+            ccp_api.products.wsdl_url(), text=file_fixture("products", "wsdl.xml")
+        )
+        requests_mock.post(
+            "http://wcfccpservicesbase.cloudcommercepro.com/CCPApiProductsService.svc",
+            text=response_text,
+        )
+        returned_value = ccp_api.products.get_product_images("1234864")
+        assert isinstance(returned_value, requests.models.Response)
+        assert returned_value.text == response_text
