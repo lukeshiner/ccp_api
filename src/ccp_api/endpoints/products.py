@@ -123,6 +123,8 @@ class _GetProductByID(_Method):
     def handle_request_exception(self, e):
         if isinstance(e, zeep.exceptions.Fault):
             raise exceptions.ResponseError("Product not found")
+        else:
+            raise e
 
 
 class _GetProductBySKU(_Method):
