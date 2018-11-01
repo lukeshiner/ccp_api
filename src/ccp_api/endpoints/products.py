@@ -156,7 +156,7 @@ class _GetProductImages(_Method):
     method_name = "getProductImages"
 
     def process_response(self, response):
-        if response is None:
+        if response.Content is None:
             return []
         else:
             return response.Content.APIProductImage
