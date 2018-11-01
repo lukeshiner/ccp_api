@@ -56,11 +56,14 @@ class _Method:
         if not response.Success:
             raise ResponseError(response.ErrorMessage)
 
-    def process_content(*args, **kwargs):
-        return args[0]
+    def process_content(self, *args, **kwargs):
+        if args:
+            return args[0]
+        else:
+            return None
 
     def process_response(self, response):
         return response.Content
 
-    def handle_request_exception(e):
+    def handle_request_exception(self, e):
         raise e
